@@ -19,18 +19,26 @@ if(isset($_POST['todo'])){
     // redirect halaman
     header('location: index.php');
 }
+
+if(isset($_GET['status'])){
+    $todoIsi[$_GET['key']]['status']=$_GET['status'];
+    $daftar_belanja=serialize($todoIsi);
+    file_put_contents('todo.txt', $daftar_belanja);
+    header('location:index.php');
+}
+print_r($todoIsi);
 ?>
 
-<form action="" method="post">
+<form action="" method="POST">
 <label>Daftar Pekerjaan Hari Ini</label> </br>
-<input type="text" name="todo">
+<input type="text" name="todo" >
 <button type="submit">Simpan</button>
 </form>
 <ul>
 <?php foreach ($todoIsi as $key => $value) {
  ?>
     <li>
-        <input type="checkbox" name="todo">
+        <input type="checkbox" name="todo" onclick="window.location.href='index.php?status=1&key=<?php echo $key;?>'" <?php if($value['status'] == 1) echo 'checked' ?>>
         <label> <?php echo $value[todo] ?></label>
         <a href="#">hapus</a>
     </li>
