@@ -1,7 +1,10 @@
 <?php
 $todoIsi = [];
+// melakukan pengecekkan apakah file todo.txt ditemukan
 if(file_exists('todo.txt')){
+    // membaca file todo.txt
     $file = file_get_contents('todo.txt');
+    //mengubah format serialize menjadi array
     $todoIsi = unserialize($file);
 }
 
@@ -13,6 +16,8 @@ if(isset($_POST['todo'])){
     ];
     $daftar_belanja=serialize($todoIsi);
     file_put_contents('todo.txt', $daftar_belanja);
+    // redirect halaman
+    header('location: index.php');
 }
 ?>
 
