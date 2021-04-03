@@ -26,7 +26,12 @@ if(isset($_GET['status'])){
     file_put_contents('todo.txt', $daftar_belanja);
     header('location:index.php');
 }
-print_r($todoIsi);
+if (isset($_GET['hapus'])) {
+    unset($todoIsi[$_GET['key']]);
+    $daftar_belanja=serialize($todoIsi);
+    file_put_contents('todo.txt', $daftar_belanja);
+    header('location:index.php');
+}
 ?>
 
 <form action="" method="POST">
@@ -38,9 +43,16 @@ print_r($todoIsi);
 <?php foreach ($todoIsi as $key => $value) {
  ?>
     <li>
-        <input type="checkbox" name="todo" onclick="window.location.href='index.php?status=1&key=<?php echo $key;?>'" <?php if($value['status'] == 1) echo 'checked' ?>>
-        <label> <?php echo $value[todo] ?></label>
-        <a href="#">hapus</a>
+        <input type="checkbox" name="todo" onclick="window.location.href='index.php?status=<?php echo $value['status']==1?'0':'1' ?>&key=<?php echo $key;?>'" <?php if($value['status'] == 1) echo 'checked' ?>>
+        <label> <?php
+        if($value['status']==1){
+            echo '<del>'.$value['todo'].'</del>' ;
+        }
+        else{
+             echo $value['todo']; }
+         ?>
+         </label>
+        <a href='index.php?hapus=1&key=<?php echo $key;?>' onclick="return confirm('apakah yakin?')">hapus</a>
     </li>
 <?php  }?>
 </ul>
